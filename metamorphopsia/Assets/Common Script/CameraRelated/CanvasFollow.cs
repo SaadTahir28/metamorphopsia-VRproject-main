@@ -6,6 +6,8 @@ using UnityEngine;
 public class CanvasFollow : MonoBehaviour
 {
     public Camera camera;
+    public float smoothSpeed = 0.125f; // Adjust the speed for smoother or faster following
+
     void Update()
     {
         Vector3 headset_position = camera.transform.position;
@@ -15,6 +17,10 @@ public class CanvasFollow : MonoBehaviour
 
         Vector3 player_pos_offset = headset_position + look * 80f;
 
-        transform.SetPositionAndRotation(player_pos_offset, headset_rotation);
+        //transform.SetPositionAndRotation(player_pos_offset, headset_rotation);
+
+        // Smoothly interpolate the position and rotation
+        transform.position = Vector3.Lerp(transform.position, player_pos_offset, smoothSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, headset_rotation, smoothSpeed * Time.deltaTime);
     }
 }

@@ -10,6 +10,7 @@ public class MenuPanel : BasePanel
     public MenuPanel() : base(new UIType(path)) { }
     public override void OnAwake()
     {
+        Debug.Log("Menu Panel Working");
         Toggle[] toggles = new Toggle[2];
 
         toggles[0] = ui_tool.GetOrAddComponentInChildren<Toggle>("BothEyes");

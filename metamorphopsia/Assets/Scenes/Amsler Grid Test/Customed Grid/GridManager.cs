@@ -95,7 +95,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         InitializeGrid();
         Rasterizer.Instance().Initilize(rasterizerShader);
@@ -166,8 +166,9 @@ public class GridManager : MonoBehaviour
 
         if (ControllerOutput.pressMenuButton)
         {
-            OnUI = !OnUI;
-            EyeTestScene.OnCallUI.Invoke();
+            //OnUI = !OnUI;
+            //EyeTestScene.OnCallUI.Invoke();
+            SimpleGameManager.Instance.OpenMenu();
         }
     }
 }

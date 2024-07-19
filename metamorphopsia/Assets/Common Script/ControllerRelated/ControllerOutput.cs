@@ -34,7 +34,7 @@ public class ControllerOutput : MonoBehaviour
         if (Keyboard.current.jKey.isPressed) rightaxisDirection.x -= 1;
         if (Keyboard.current.lKey.isPressed) rightaxisDirection.x += 1;
 
-        pressMenuButton = Keyboard.current.backspaceKey.wasPressedThisFrame;
+        pressMenuButton = Keyboard.current.enterKey.wasPressedThisFrame;
         pressPrimaryButton = Keyboard.current.spaceKey.wasPressedThisFrame;
 
 #else

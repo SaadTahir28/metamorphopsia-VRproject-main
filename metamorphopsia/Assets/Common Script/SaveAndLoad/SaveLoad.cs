@@ -92,6 +92,7 @@ static class SaveAndLoad
         writer.Write(jsonString);
         writer.Close();
 
+        Debug.Log("File Saved: " + saveFileName);
         SaveUV(ref UVmap, saveFileName);
     }
 
