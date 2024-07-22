@@ -10,6 +10,8 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
     public GameObject grid;
     public GameObject correctedImage;
 
+    private bool isCorrectionVisible = false;
+
     private void Start()
     {
         OpenMenu();
@@ -17,6 +19,17 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     private void Update()
     {
+        if (ControllerOutput.pressMenuButton)
+        {
+            if(isCorrectionVisible)
+            {
+                correctedImage.SetActive(false);
+                isCorrectionVisible = false;
+            }
+            OpenMenu();
+        }
+
+
         if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             Save();
@@ -101,11 +114,8 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
     public void Correction()
     {
         var uvMapBoth = SaveAndLoad.ReadUV("Sample");
-
-        //var width = (float)Screen.width / 100.0f;
-        //var height = (float)Screen.height / 100.0f;
-        //var ratio = height / width;
-        //correctedImage.transform.localScale = Vector3.one * ratio * 2f;
+        correctedImage.SetActive(true);
+        isCorrectionVisible = true;
 
         if (uvMapBoth != null)
         {

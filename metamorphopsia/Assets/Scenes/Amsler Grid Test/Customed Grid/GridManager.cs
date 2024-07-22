@@ -163,12 +163,5 @@ public class GridManager : MonoBehaviour
 
         else if (OnUI)
             OnUIUpdate();
-
-        if (ControllerOutput.pressMenuButton)
-        {
-            //OnUI = !OnUI;
-            //EyeTestScene.OnCallUI.Invoke();
-            SimpleGameManager.Instance.OpenMenu();
-        }
     }
 }
