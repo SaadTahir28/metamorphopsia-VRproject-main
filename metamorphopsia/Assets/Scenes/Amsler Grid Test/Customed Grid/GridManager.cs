@@ -99,7 +99,6 @@ public class GridManager : MonoBehaviour
     {
         InitializeGrid();
         Rasterizer.Instance().Initilize(rasterizerShader);
-        EyeTestScene.OnCallUI.AddListener(CallUI);
         gridDecoration = new GridDecoration(GetComponent<MeshFilter>().mesh, transform);
     }
 

@@ -115,6 +115,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
     public void Correction()
     {
         var uvMapBoth = SaveAndLoad.ReadUV("Sample");
+        mainPanel.SetActive(false);
         correctedImage.SetActive(true);
         isCorrectionVisible = true;
 
