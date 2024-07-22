@@ -37,7 +37,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
-            Read();
+            Read(); // This will also play the scene after loading
         }
 
         if (Keyboard.current.vKey.wasPressedThisFrame)
@@ -100,6 +100,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         Debug.Log("Read");
         grid.GetComponent<MeshFilter>().mesh = SaveAndLoad.Load("Sample");
         MoveVertexController.Initilize();
+        Play();
     }
 
     public void Recover()
