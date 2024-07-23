@@ -18,6 +18,8 @@ public class Webcam : MonoBehaviour
 
             // Assign the webcam texture to both materials
             material.mainTexture = webcamTexture;
+            material.mainTextureOffset = Vector2.zero;
+            material.mainTextureScale = new Vector2(1, -1);
         }
         else
         {
