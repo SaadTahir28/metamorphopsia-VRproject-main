@@ -35,11 +35,6 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
             Save();
         }
 
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            Read(); // This will also play the scene after loading
-        }
-
         if (Keyboard.current.vKey.wasPressedThisFrame)
         {
             Recover();
@@ -47,6 +42,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
         if (Keyboard.current.pKey.wasPressedThisFrame)
         {
+            Read();
             Play();
         }
 
@@ -100,7 +96,6 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         Debug.Log("Read");
         grid.GetComponent<MeshFilter>().mesh = SaveAndLoad.Load("Sample");
         MoveVertexController.Initilize();
-        Play();
     }
 
     public void Recover()
@@ -114,21 +109,8 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     public void Correction()
     {
-        var uvMapBoth = SaveAndLoad.ReadUV("Sample");
         mainPanel.SetActive(false);
         correctedImage.SetActive(true);
         isCorrectionVisible = true;
-
-        if (uvMapBoth != null)
-        {
-            correctedImage.GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
-            correctedImage.GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
-            Debug.Log("Correction Applied");
-        }
-        else
-        {
-            correctedImage.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
-            Debug.Log("Correction Basic");
-        }
     }
 }

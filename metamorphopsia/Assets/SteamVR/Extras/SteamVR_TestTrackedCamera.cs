@@ -9,6 +9,7 @@ namespace Valve.VR.Extras
         public static bool undistorted = false;
         public bool cropped = true;
         public int eyes;
+        public GameObject cameraDialogue;
 
         private void OnEnable()
         {
@@ -19,13 +20,16 @@ namespace Valve.VR.Extras
 
             // Auto-disable if no camera is present.
             if (!source.hasCamera)
-                enabled = false;
+            {
+                cameraDialogue.GetComponent<Renderer>().material.color = Color.red;
+                //enabled = false;
+            }
         }
 
         private void OnDisable()
         {
-            // Clear the texture when no longer active.
-            material.mainTexture = null;
+            //// Clear the texture when no longer active.
+            //material.mainTexture = null;
 
             // The video stream must be symmetrically acquired and released in
             // order to properly disable the stream once there are no consumers.
@@ -36,12 +40,22 @@ namespace Valve.VR.Extras
         private void Update()
         {
             SteamVR_TrackedCamera.VideoStreamTexture source = SteamVR_TrackedCamera.Source(undistorted);
+
+            //if(!source.hasCamera)
+            //{
+            //    cameraDialogue.GetComponent<Renderer>().material.color = Color.red;
+            //    source.Acquire();
+            //    return;
+            //}
+
             Texture2D texture = source.texture;
             if (texture == null)
             {
+                cameraDialogue.GetComponent<Renderer>().material.color = Color.red;
                 return;
             }
 
+            cameraDialogue.GetComponent<Renderer>().material.color = Color.green;
             // Apply the latest texture to the material.  This must be performed
             // every frame since the underlying texture is actually part of a ring
             // buffer which is updated in lock-step with its associated pose.
