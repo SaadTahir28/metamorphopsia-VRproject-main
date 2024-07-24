@@ -76,7 +76,7 @@ namespace Valve.VR.Extras
                 }
 
                 material.mainTextureOffset = (eyes == 0 ? new Vector2(0f, 1f) : new Vector2(0f, 0.5f));
-                material.mainTextureScale = new Vector2(1f, 0.5f);
+                material.mainTextureScale = new Vector2(1f, -0.5f);
 
                 VRTextureBounds_t bounds = source.frameBounds;
                 float du = bounds.uMax - bounds.uMin;
