@@ -9,7 +9,6 @@ namespace Valve.VR.Extras
         public static bool undistorted = false;
         public bool cropped = true;
         public int eyes;
-        public GameObject cameraDialogue;
 
         private void OnEnable()
         {
@@ -21,15 +20,15 @@ namespace Valve.VR.Extras
             // Auto-disable if no camera is present.
             if (!source.hasCamera)
             {
-                cameraDialogue.GetComponent<Renderer>().material.color = Color.red;
                 //enabled = false;
+                Debug.Log("No Camera is present");
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            //// Clear the texture when no longer active.
-            //material.mainTexture = null;
+            // Clear the texture when no longer active.
+            material.mainTexture = null;
 
             // The video stream must be symmetrically acquired and released in
             // order to properly disable the stream once there are no consumers.
@@ -41,21 +40,20 @@ namespace Valve.VR.Extras
         {
             SteamVR_TrackedCamera.VideoStreamTexture source = SteamVR_TrackedCamera.Source(undistorted);
 
-            //if(!source.hasCamera)
-            //{
-            //    cameraDialogue.GetComponent<Renderer>().material.color = Color.red;
-            //    source.Acquire();
-            //    return;
-            //}
+            if (!source.hasCamera)
+            {
+                Debug.Log("No Camera is present. Acquiring one...");
+                source.Acquire();
+                return;
+            }
 
             Texture2D texture = source.texture;
             if (texture == null)
             {
-                cameraDialogue.GetComponent<Renderer>().material.color = Color.red;
+                Debug.Log("No Source Texture is present");
                 return;
             }
 
-            cameraDialogue.GetComponent<Renderer>().material.color = Color.green;
             // Apply the latest texture to the material.  This must be performed
             // every frame since the underlying texture is actually part of a ring
             // buffer which is updated in lock-step with its associated pose.
@@ -78,7 +76,7 @@ namespace Valve.VR.Extras
                 }
 
                 material.mainTextureOffset = (eyes == 0 ? new Vector2(0f, 1f) : new Vector2(0f, 0.5f));
-                material.mainTextureScale = new Vector2(1f, -0.5f);
+                material.mainTextureScale = new Vector2(1f, 0.5f);
 
                 VRTextureBounds_t bounds = source.frameBounds;
                 float du = bounds.uMax - bounds.uMin;
@@ -89,7 +87,7 @@ namespace Valve.VR.Extras
             else
             {
                 material.mainTextureOffset = Vector2.zero;
-                material.mainTextureScale = new Vector2(1, -1);
+                material.mainTextureScale = new Vector2(1, 1);
             }
         }
     }

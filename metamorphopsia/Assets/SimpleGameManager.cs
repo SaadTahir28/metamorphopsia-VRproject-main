@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomGrid;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class SimpleGameManager : Singleton<SimpleGameManager>
 {
+    public TMP_Text debugText;
     public GameObject mainPanel;
     public GameObject grid;
     public GameObject correctedImage;
 
     private bool isCorrectionVisible = false;
+    private Texture2D uvMapBoth;
 
     private void Start()
     {
@@ -19,17 +22,30 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     private void Update()
     {
+        if(isCorrectionVisible)
+        {
+            SetUVTexture();
+        }
+
+        ControllerInput();
+        UIControls();
+    }
+
+    private void ControllerInput()
+    {
         if (ControllerOutput.pressMenuButton)
         {
-            if(isCorrectionVisible)
+            if (isCorrectionVisible)
             {
                 correctedImage.SetActive(false);
                 isCorrectionVisible = false;
             }
             OpenMenu();
         }
+    }
 
-
+    private void UIControls()
+    {
         if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             Save();
@@ -112,5 +128,27 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         mainPanel.SetActive(false);
         correctedImage.SetActive(true);
         isCorrectionVisible = true;
+
+        uvMapBoth = SaveAndLoad.ReadUV("Sample");
+    }
+
+    private void SetUVTexture()
+    {
+        if (uvMapBoth != null)
+        {
+            correctedImage.GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
+            correctedImage.GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
+            Debug.Log("Correction Applied");
+        }
+        else
+        {
+            correctedImage.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
+            Debug.Log("Correction Basic");
+        }
+    }
+
+    private void SetDebugText(string text)
+    {
+        debugText.text = text;
     }
 }

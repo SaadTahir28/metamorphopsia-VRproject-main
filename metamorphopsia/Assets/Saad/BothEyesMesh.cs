@@ -6,28 +6,32 @@ using UnityEngine.Events;
 public class BothEyesMesh : MonoBehaviour
 {
 
-    Texture2D uvMapBoth;
+    //Texture2D uvMapBoth;
 
-    void Start()
+    void Awake()
     {
         GetComponent<MeshFilter>().mesh = PlayerMesh.DisplayMesh();
-
-        uvMapBoth = SaveAndLoad.ReadUV("Sample");
     }
 
-    private void Update()
-    {
-        SetUVTexture();
-    }
+    //private void OnEnable()
+    //{
+    //    Debug.Log("Enabled Mesh");
+    //    uvMapBoth = SaveAndLoad.ReadUV("Sample");
+    //}
 
-    void SetUVTexture()
-    {
-        if (uvMapBoth != null)
-        {
-            GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
-            GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
-        }
-        else
-            GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
-    }
+    //private void Update()
+    //{
+    //    SetUVTexture();
+    //}
+
+    //void SetUVTexture()
+    //{
+    //    if (uvMapBoth != null)
+    //    {
+    //        GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
+    //        GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
+    //    }
+    //    else
+    //        GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
+    //}
 }
