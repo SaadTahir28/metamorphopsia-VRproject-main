@@ -10,9 +10,12 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
     public TMP_Text debugText;
     public GameObject mainPanel;
     public GameObject grid;
-    public GameObject correctedImage;
+    public GameObject correctionMesh;
+    public Texture imageCorrectionTexture;
+    public Texture videoCorrectionTexture;
 
     private bool isCorrectionVisible = false;
+    private bool isRealtimeCorrection = false;
     private Texture2D uvMapBoth;
 
     private void Start()
@@ -37,7 +40,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         {
             if (isCorrectionVisible)
             {
-                correctedImage.SetActive(false);
+                correctionMesh.SetActive(false);
                 isCorrectionVisible = false;
             }
             OpenMenu();
@@ -64,7 +67,12 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
-            Correction();
+            ImageCorrection();
+        }
+
+        if (Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            RealtimeCorrection();
         }
 
         if (Keyboard.current.nKey.wasPressedThisFrame)
@@ -123,26 +131,53 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         GridManager.gridDecoration.Update(grid.GetComponent<MeshFilter>().mesh, grid.transform);
     }
 
-    public void Correction()
+    public void RealtimeCorrection()
     {
         mainPanel.SetActive(false);
-        correctedImage.SetActive(true);
+        correctionMesh.SetActive(true);
         isCorrectionVisible = true;
-
+        isRealtimeCorrection = true;
         uvMapBoth = SaveAndLoad.ReadUV("Sample");
+        correctionMesh.GetComponent<Renderer>().material.mainTexture = videoCorrectionTexture;
+    }
+
+    public void ImageCorrection()
+    {
+        mainPanel.SetActive(false);
+        correctionMesh.SetActive(true);
+        isCorrectionVisible = true;
+        isRealtimeCorrection = false;
+        uvMapBoth = SaveAndLoad.ReadUV("Sample");
+        correctionMesh.GetComponent<Renderer>().material.mainTexture = imageCorrectionTexture;
+        SetUVTexture();
     }
 
     private void SetUVTexture()
     {
         if (uvMapBoth != null)
         {
-            correctedImage.GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
-            correctedImage.GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
+            correctionMesh.GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
+            correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
             Debug.Log("Correction Applied");
         }
         else
         {
-            correctedImage.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
+            correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
+            Debug.Log("Correction Basic");
+        }
+    }
+
+    private void SetImageTexture()
+    {
+        if (uvMapBoth != null)
+        {
+            correctionMesh.GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
+            correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
+            Debug.Log("Correction Applied");
+        }
+        else
+        {
+            correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
             Debug.Log("Correction Basic");
         }
     }
