@@ -80,21 +80,30 @@ static class SaveAndLoad
 
     static public void Save(Mesh storedMesh, RenderTexture UVmap, string fileName)
     {
+        string storagePath = Application.dataPath + "/Storage";
+        if (!Directory.Exists(storagePath))
+        {
+            Directory.CreateDirectory(storagePath);
+            Debug.Log("Directory Created: " + storagePath);
+        }
+
         if (SceneManager.GetActiveScene().name == "Eyes Test")
             GameObject.Find("Canvas").GetComponent<Processing>().enabled = true;
 
         meshInformation.vertices = storedMesh.vertices;
         meshInformation.subdivisionLevel = GridGeneration.Instance().subdivisionLevel;
 
-        string saveFileName = Application.dataPath + "/Storage/" + fileName;
+        string saveFileName = storagePath + "/" + fileName;
         string jsonString = JsonUtility.ToJson(meshInformation);
         StreamWriter writer = new StreamWriter(saveFileName + ".json");
         writer.Write(jsonString);
         writer.Close();
 
         Debug.Log("File Saved: " + saveFileName);
+        SimpleGameManager.Instance.SetDebugText("File Saved: " + saveFileName);
         SaveUV(ref UVmap, saveFileName);
     }
+
 
     static public Mesh Load(string fileName)
     {
@@ -111,8 +120,12 @@ static class SaveAndLoad
             Mesh mesh = GridGeneration.Instance().Initilize(meshInformation.subdivisionLevel);
             mesh.SetVertices(meshInformation.vertices);
 
+            SimpleGameManager.Instance.SetDebugText("Mesh Loaded");
+
             return mesh;
         }
+
+        SimpleGameManager.Instance.SetDebugText("No Load file Found. Creating new!");
 
         return GridGeneration.Instance().Initilize(1);
     }

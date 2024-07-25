@@ -35,7 +35,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     private void ControllerInput()
     {
-        if (ControllerOutput.pressMenuButton)
+        if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             if (isCorrectionVisible)
             {
@@ -167,11 +167,18 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
             correctionMesh.GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
             correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
             Debug.Log("Correction Applied");
+            SetDebugText("Correction Applied");
         }
         else
         {
             correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
             Debug.Log("Correction Basic");
+            SetDebugText("Correction Basic");
         }
+    }
+
+    public void SetDebugText(string text)
+    {
+        debugText.text = text;
     }
 }
