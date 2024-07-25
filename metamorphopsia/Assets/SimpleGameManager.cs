@@ -35,7 +35,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     private void ControllerInput()
     {
-        if (Keyboard.current.qKey.wasPressedThisFrame)
+        if (ControllerOutput.pressMenuButton)
         {
             if (isCorrectionVisible)
             {
