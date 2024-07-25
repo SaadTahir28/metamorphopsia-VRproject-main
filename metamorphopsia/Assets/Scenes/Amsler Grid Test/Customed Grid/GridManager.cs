@@ -22,7 +22,7 @@ public class GridManager : MonoBehaviour
 
     public ComputeShader rasterizerShader;
 
-    void InitializeGrid()
+    public void InitializeGrid()
     {
         GetComponent<MeshFilter>().mesh = GridGeneration.Instance().Initilize(1);
         if (GetComponent<MeshFilter>().mesh == null)

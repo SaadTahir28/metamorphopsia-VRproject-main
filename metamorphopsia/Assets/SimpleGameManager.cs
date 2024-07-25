@@ -15,7 +15,6 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
     public Texture videoCorrectionTexture;
 
     private bool isCorrectionVisible = false;
-    private bool isRealtimeCorrection = false;
     private Texture2D uvMapBoth;
 
     private void Start()
@@ -59,9 +58,13 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
             Recover();
         }
 
-        if (Keyboard.current.pKey.wasPressedThisFrame)
+        if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             Read();
+        }
+
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+        {
             Play();
         }
 
@@ -128,7 +131,15 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         grid.GetComponent<MeshFilter>().mesh = GridGeneration.Instance().Initilize(GridGeneration.Instance().subdivisionLevel);
 
         GridDecoration.changed = true;
+
         GridManager.gridDecoration.Update(grid.GetComponent<MeshFilter>().mesh, grid.transform);
+    }
+
+    public void ResetMesh()
+    {
+        Debug.Log("ResetMesh");
+        var gridManager = grid.GetComponent<GridManager>();
+        gridManager.InitializeGrid();
     }
 
     public void RealtimeCorrection()
@@ -136,7 +147,6 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         mainPanel.SetActive(false);
         correctionMesh.SetActive(true);
         isCorrectionVisible = true;
-        isRealtimeCorrection = true;
         uvMapBoth = SaveAndLoad.ReadUV("Sample");
         correctionMesh.GetComponent<Renderer>().material.mainTexture = videoCorrectionTexture;
     }
@@ -146,10 +156,8 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         mainPanel.SetActive(false);
         correctionMesh.SetActive(true);
         isCorrectionVisible = true;
-        isRealtimeCorrection = false;
         uvMapBoth = SaveAndLoad.ReadUV("Sample");
         correctionMesh.GetComponent<Renderer>().material.mainTexture = imageCorrectionTexture;
-        SetUVTexture();
     }
 
     private void SetUVTexture()
@@ -165,25 +173,5 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
             correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
             Debug.Log("Correction Basic");
         }
-    }
-
-    private void SetImageTexture()
-    {
-        if (uvMapBoth != null)
-        {
-            correctionMesh.GetComponent<Renderer>().material.SetTexture("_UVTex", uvMapBoth);
-            correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 1.0f);
-            Debug.Log("Correction Applied");
-        }
-        else
-        {
-            correctionMesh.GetComponent<Renderer>().material.SetFloat("exist", 0.0f);
-            Debug.Log("Correction Basic");
-        }
-    }
-
-    private void SetDebugText(string text)
-    {
-        debugText.text = text;
     }
 }
