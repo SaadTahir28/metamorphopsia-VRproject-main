@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIController : Singleton<SimpleGameManager>
+public class UIController : MonoBehaviour
 {
     [SerializeField] GameObject MainMenu;
     [SerializeField] GameObject SecondUI;
@@ -18,6 +18,11 @@ public class UIController : Singleton<SimpleGameManager>
     public bool isBothEyesSelected;
     public bool isLeftEyeSelected;
     public bool isRightEyeSelected;
+
+    public void OpenMenu()
+    {
+        MainMenu.SetActive(true);
+    }
 
     public void SetBothEyes()
     {

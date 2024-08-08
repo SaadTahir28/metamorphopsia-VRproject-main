@@ -7,8 +7,8 @@ using TMPro;
 
 public class SimpleGameManager : Singleton<SimpleGameManager>
 {
+    public UIController uiController;
     public TMP_Text debugText;
-    public GameObject mainPanel;
     public GameObject grid;
     public GameObject correctionMesh;
     public Texture imageCorrectionTexture;
@@ -19,7 +19,8 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     private void Start()
     {
-        OpenMenu();
+        uiController.OpenMenu();
+        //OpenMenu();
     }
 
     private void Update()
@@ -30,19 +31,20 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         }
 
         ControllerInput();
-        UIControls();
+        //UIControls();
     }
 
     private void ControllerInput()
     {
         if (ControllerOutput.pressMenuButton)
         {
-            if (isCorrectionVisible)
-            {
-                correctionMesh.SetActive(false);
-                isCorrectionVisible = false;
-            }
-            OpenMenu();
+            //if (isCorrectionVisible)
+            //{
+            //    correctionMesh.SetActive(false);
+            //    isCorrectionVisible = false;
+            //}
+            //OpenMenu();
+            uiController.OpenMenu();
         }
     }
 
@@ -91,17 +93,17 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         }
     }
 
-    public void OpenMenu()
-    {
-        Debug.Log("OpenMenu");
-        mainPanel.SetActive(true);
-        grid.SetActive(false);
-    }
+    //public void OpenMenu()
+    //{
+    //    Debug.Log("OpenMenu");
+    //    //mainPanel.SetActive(true);
+    //    grid.SetActive(false);
+    //}
 
     public void Play()
     {
         Debug.Log("Play");
-        mainPanel.SetActive(false);
+        //mainPanel.SetActive(false);
         grid.SetActive(true);
     }   
     
@@ -144,7 +146,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     public void RealtimeCorrection()
     {
-        mainPanel.SetActive(false);
+        //mainPanel.SetActive(false);
         correctionMesh.SetActive(true);
         isCorrectionVisible = true;
         uvMapBoth = SaveAndLoad.ReadUV("Sample");
@@ -153,7 +155,7 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
 
     public void ImageCorrection()
     {
-        mainPanel.SetActive(false);
+        //mainPanel.SetActive(false);
         correctionMesh.SetActive(true);
         isCorrectionVisible = true;
         uvMapBoth = SaveAndLoad.ReadUV("Sample");
