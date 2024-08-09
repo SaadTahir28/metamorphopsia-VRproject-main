@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] GameObject MainMenu;
-    [SerializeField] GameObject SecondUI;
-    [SerializeField] GameObject TestAndCorrectionUI;
-    [SerializeField] GameObject TestAndCorrectionUI2;
-    [SerializeField] GameObject TrackingUI;
-    [SerializeField] GameObject TrackingUI2;
-    [SerializeField] GameObject TreatmentAndExcersisesUI;
-    [SerializeField] GameObject TreatmentAndExcersisesUI2;
+    [SerializeField] GameObject[] menus;
 
     // We need to save information about the settings applied in each panel
     // For example that would be simply, Both Eyes, Left Eye and Right Eye
@@ -21,7 +14,17 @@ public class UIController : MonoBehaviour
 
     public void OpenMenu()
     {
-        MainMenu.SetActive(true);
+        // We will need to decide which menu to open here
+        menus[0].SetActive(true);
+    }
+
+    public void CloseMenu()
+    {
+        // Just close all menus
+        foreach (var menu in menus)
+        {
+            menu.SetActive(false);
+        }
     }
 
     public void SetBothEyes()

@@ -14,13 +14,15 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
     public Texture imageCorrectionTexture;
     public Texture videoCorrectionTexture;
 
+    public GameObject testEyeTrackingGO;
+    public SRAnipalEyeTrackingData eyeTrackingManager;
+
     private bool isCorrectionVisible = false;
     private Texture2D uvMapBoth;
 
     private void Start()
     {
         uiController.OpenMenu();
-        //OpenMenu();
     }
 
     private void Update()
@@ -31,7 +33,6 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
         }
 
         ControllerInput();
-        //UIControls();
     }
 
     private void ControllerInput()
@@ -99,6 +100,28 @@ public class SimpleGameManager : Singleton<SimpleGameManager>
     //    //mainPanel.SetActive(true);
     //    grid.SetActive(false);
     //}
+
+    public void TestEyeTracking()
+    {
+        Debug.Log("Test Eye Tracking");
+        StartCoroutine(BeginTestEyeTracking(5f));
+    }
+
+    private IEnumerator BeginTestEyeTracking(float duration)
+    {
+        eyeTrackingManager.ClearData();
+        uiController.CloseMenu();
+        testEyeTrackingGO.SetActive(true);
+        eyeTrackingManager.SetDataCollection(true);
+        
+        yield return new WaitForSeconds(duration);
+
+        eyeTrackingManager.SetDataCollection(false);
+        var lastEyeTrackingData = eyeTrackingManager.GetData();
+        SaveAndLoad.Save(lastEyeTrackingData, "EyeTrackingData");
+        testEyeTrackingGO.SetActive(false);
+        uiController.OpenMenu();
+    }
 
     public void Play()
     {

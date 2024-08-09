@@ -36,12 +36,20 @@ class DisplayMode
     public bool isIndividual;
 }
 
+[System.Serializable]
+class EyeTrackingData
+{
+    [SerializeField]
+    public List<GazeData> gazeDataList;
+}
+
 static class SaveAndLoad
 {
     static MeshInformation meshInformation = new MeshInformation();
     static UIInformation uiInformation = new UIInformation();
     static DisplayMode displayMode = new DisplayMode();
     static UVInformation uvInformation = new UVInformation();
+    static EyeTrackingData eyeTrackingData = new EyeTrackingData();
 
     static public Texture2D RenderTextureToTexture2D(ref RenderTexture renderTexture)
     {
@@ -75,6 +83,27 @@ static class SaveAndLoad
             return readTexture;
         }
         return null;
+    }
+
+    static public void Save(List<GazeData> data, string fileName)
+    {
+        string storagePath = Application.dataPath + "/Storage";
+        if (!Directory.Exists(storagePath))
+        {
+            Directory.CreateDirectory(storagePath);
+            Debug.Log("Directory Created: " + storagePath);
+        }
+
+        eyeTrackingData.gazeDataList = data;
+
+        string saveFileName = storagePath + "/" + fileName;
+        string jsonString = JsonUtility.ToJson(eyeTrackingData);
+        StreamWriter writer = new StreamWriter(saveFileName + ".json");
+        writer.Write(jsonString);
+        writer.Close();
+
+        Debug.Log("File Saved: " + saveFileName);
+        SimpleGameManager.Instance.SetDebugText("File Saved: " + saveFileName);
     }
 
 
